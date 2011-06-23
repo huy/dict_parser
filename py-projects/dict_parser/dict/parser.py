@@ -24,7 +24,10 @@ class DictParser:
     return len(self.dict.keys())
 
   def tsort(self):
-    return TSorter(self.dict).sort(self.not_used_in_any_defs)
+    s = TSorter(self.dict)
+    s.sort(self.not_used_in_any_defs)
+    self.sorted = s.sorted
+    self.cycles = s.cycles
 
 class LineParser:
 
@@ -85,6 +88,14 @@ if __name__ == "__main__":
     print "ERROR: file %s is empty or contains only comments" % filename
     exit(-3)
   else:
-    print ",".join(p.tsort())
-    exit(0)
+    p.tsort()
+    print ",".join(p.sorted)
+
+  if len(p.cycles):
+    print "WARNING: detect cyclic definitions"
+    for z in p.cycles:
+      print "\t%s" % z
+    exit(1)
+ 
+  exit(0)
 

@@ -81,7 +81,8 @@ Fruit    .
 Pear     Yellow Fruit 
 """
      )
-     sorted = p.tsort()
+     p.tsort()
+     sorted = p.sorted
  
      self.assertTrue(sorted.index("Red") < sorted.index("Apple"))
      self.assertTrue(sorted.index("Fruit") < sorted.index("Apple"))
