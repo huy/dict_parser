@@ -54,10 +54,14 @@ class TestSort(unittest.TestCase):
   def test_has_cycle(self):
     s = TSorter({"Egg":["Chicken","White"],
             "Chicken":["Egg","Yellow"],
+            "Bird":["Egg"],
             "Yellow":["Color"],
             "White":["Color"],
             "Color":[]})
    
+    s.sort(["Bird"])
+    self.assertEqual("Bird->Egg->Chicken->Egg",s.cycles[0])
+
     s.sort(["Egg"])
     self.assertEqual("Egg->Chicken->Egg",s.cycles[0])
 
