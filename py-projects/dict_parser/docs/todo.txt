@@ -1,7 +1,7 @@
-1. input/ouput from/to file
+1. input/ouput from/to file =>DONE
 2. cycle detection
 3. deterministic torder
 4. performance test
-5. run with desired input
+5. run with desired input => DONE
 6. word missing in dictionary
 7. 

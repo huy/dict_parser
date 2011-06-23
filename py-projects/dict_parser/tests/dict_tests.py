@@ -15,7 +15,6 @@ class TestParseDict:
     p = DictParser().parse("Color .\nRed Color\nFruit .\nApple Red Fruit") 
     assert_equal(["Apple"],p.not_used_in_any_defs)
 
-
 class TestParseLine:
 
   def test_ignore_comment(self):
@@ -26,17 +25,17 @@ class TestParseLine:
     p = LineParser().parse("Color .")
     assert_equal([],p.definition)
 
-  def test_word(self):
+  def test_got_a_word(self):
     p = LineParser().parse("Yellow Color")
     assert_equal("Yellow",p.word)
 
-  def test_def(self):
+  def test_got_a_def(self):
     p = LineParser().parse("Apple Red Fruit")
     assert_equal(["Red","Fruit"],p.definition)
 
-class TestTSort:
+class TestSort:
 
-  def test_only_primitives(self):
+  def test_sort_only_primitives(self):
     ts = TSorter({"Color":[],"Fruit":[]}).tsort(["Color","Fruit"])
     assert_equal(["Color","Fruit"],ts.tsorted)
     
@@ -54,7 +53,7 @@ class TestTSort:
                   "Pear":["Yellow"],"Yellow":["Color"],"White":["Color"],"Color":[]}).tsort(["Pear"])
     assert_equal(["Color","Yellow","Pear"],ts.tsorted)
     
-class TestDictTSorted:
+class TestParseAndSort:
 
    def test_sample_input(self):
      p = DictParser().parse(
