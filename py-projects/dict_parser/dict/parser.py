@@ -4,7 +4,7 @@ class DictParser:
 
   def ignored(self,str):
     str = str.strip()
-    return str == "#" or str == ""
+    return str == "" or str[0] == "#"
 
   def parse(self,lines):
     words_used_in_def=set()
@@ -51,7 +51,28 @@ class TSorter:
   def visit(self,word,visited):
     if not word in visited:
       visited.add(word)
-      for z in self.dict[word]:
-        self.visit(z,visited)
-      self.tsorted.append(word) 
+      if word in self.dict:
+        for z in self.dict[word]:
+          self.visit(z,visited)
+        self.tsorted.append(word) 
+  
+if __name__ == "__main__":
+  from sys import argv,exit
+  from os.path import exists 
+
+  if len(argv) !=2:
+    print "missing inputfile"
+    exit(-1)
+  
+  script, filename = argv 
+
+  if not exists(filename):
+    print "file %s does not exists" % filename
+    exit(-1)
+
+  input = open(filename) 
+  p = DictParser().parse(input.read())
+  input.close() 
+  
+  print ",".join(p.tsorted())
 

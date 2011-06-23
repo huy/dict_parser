@@ -4,7 +4,7 @@ from dict.parser import *
 class TestParseDict:
 
   def test_ignore_comment(self):
-    p = DictParser().parse("#\n #\n\t#\nColor .") 
+    p = DictParser().parse("# this is comment\n #\n\t#\nColor .") 
     assert_equal(1,p.num_words())
 
   def test_ignore_empty_line(self):
@@ -40,11 +40,11 @@ class TestTSort:
     ts = TSorter({"Color":[],"Fruit":[]}).tsort(["Color","Fruit"])
     assert_equal(["Color","Fruit"],ts.tsorted)
     
-  def test_distance_zero(self):
+  def test_1hop_distance(self):
     ts = TSorter({"Color":[],"Yellow":["Color"]}).tsort(["Yellow"])
     assert_equal(["Color","Yellow"],ts.tsorted)
 
-  def test_distance_one(self):
+  def test_2hops_distance(self):
     ts = TSorter({"Color":[],"Yellow":["Color"],"Fruit":[],
                  "Pear":["Yellow","Fruit"]}).tsort(["Pear"])
     assert_equal(["Color","Yellow","Fruit","Pear"],ts.tsorted)

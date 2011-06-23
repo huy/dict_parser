@@ -1,0 +1,12 @@
+# The first test file
+red color
+apple red roundish fruit # Apples are tasty
+onion yellow roundish vegetable
+long shape
+shape .
+banana yellow long fruit
+yellow color
+roundish shape
+pear yellow roundish fruit
+corn yellow long vegetable
+color .
