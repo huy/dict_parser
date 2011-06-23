@@ -9,11 +9,12 @@ class DictParser:
   def parse(self,lines):
     words_used_in_def=set()
     lp = LineParser()
-    for z in lines.split("\n"):
-      if not self.ignored(z):
-        lp.parse(z)
+    for str in lines.split("\n"):
+      if not self.ignored(str):
+        lp.parse(str)
         self.dict[lp.word] = lp.definition
-        words_used_in_def = words_used_in_def.union(lp.definition)
+        for z in lp.definition:
+          words_used_in_def.add(z)
 
     self.not_used_in_any_defs = [z for z in self.dict if not z in words_used_in_def] 
 
@@ -68,11 +69,16 @@ if __name__ == "__main__":
 
   if not exists(filename):
     print "file %s does not exists" % filename
-    exit(-1)
+    exit(-2)
 
   input = open(filename) 
   p = DictParser().parse(input.read())
   input.close() 
   
-  print ",".join(p.tsort())
+  if p.num_words() == 0:
+    print "file %s is empty or contains only comments" % filename
+    exit(-3)
+  else:
+    print ",".join(p.tsort())
+    exit(0)
 
