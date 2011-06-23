@@ -22,6 +22,9 @@ class DictParser:
   def num_words(self):
     return len(self.dict.keys())
 
+  def tsorted(self):
+    return TSorter(self.dict).tsort(self.not_used_in_any_defs).tsorted
+
 class LineParser:
 
   def parse(self,line):
@@ -36,10 +39,10 @@ class SortError(Exception):
 class TSorter:
 
   def __init__(self,dict):
-    self.ordered = []
+    self.tsorted = []
     self.dict = dict
 
-  def sort(self,start_with):
+  def tsort(self,start_with):
     visited = set([])
     for z in start_with:
       self.visit(z,visited)
@@ -50,5 +53,5 @@ class TSorter:
       visited.add(word)
       for z in self.dict[word]:
         self.visit(z,visited)
-      self.ordered.append(word) 
+      self.tsorted.append(word) 
 

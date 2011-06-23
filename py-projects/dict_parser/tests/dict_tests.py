@@ -1,7 +1,7 @@
 from nose.tools import *
 from dict.parser import *
 
-class TestDictParser:
+class TestParseDict:
 
   def test_ignore_comment(self):
     p = DictParser().parse("#\n #\n\t#\nColor .") 
@@ -16,7 +16,7 @@ class TestDictParser:
     assert_equal(["Apple"],p.not_used_in_any_defs)
 
 
-class TestLineParser:
+class TestParseLine:
 
   def test_ignore_comment(self):
     p = LineParser().parse("Yellow Color # bright")
@@ -34,27 +34,27 @@ class TestLineParser:
     p = LineParser().parse("Apple Red Fruit")
     assert_equal(["Red","Fruit"],p.definition)
 
-class TestTSorter:
+class TestTSort:
 
   def test_only_primitives(self):
-    ts = TSorter({"Color":[],"Fruit":[]}).sort(["Color","Fruit"])
-    assert_equal(["Color","Fruit"],ts.ordered)
+    ts = TSorter({"Color":[],"Fruit":[]}).tsort(["Color","Fruit"])
+    assert_equal(["Color","Fruit"],ts.tsorted)
     
   def test_distance_zero(self):
-    ts = TSorter({"Color":[],"Yellow":["Color"]}).sort(["Yellow"])
-    assert_equal(["Color","Yellow"],ts.ordered)
+    ts = TSorter({"Color":[],"Yellow":["Color"]}).tsort(["Yellow"])
+    assert_equal(["Color","Yellow"],ts.tsorted)
 
   def test_distance_one(self):
     ts = TSorter({"Color":[],"Yellow":["Color"],"Fruit":[],
-                 "Pear":["Yellow","Fruit"]}).sort(["Pear"])
-    assert_equal(["Color","Yellow","Fruit","Pear"],ts.ordered)
+                 "Pear":["Yellow","Fruit"]}).tsort(["Pear"])
+    assert_equal(["Color","Yellow","Fruit","Pear"],ts.tsorted)
 
   def test_has_cycle(self):
     ts = TSorter({"Egg":["Chicken","White"],"Chicken":["Egg","Yellow"],
-                  "Pear":["Yellow"],"Yellow":["Color"],"White":["Color"],"Color":[]}).sort(["Pear"])
-    assert_equal(["Color","Yellow","Pear"],ts.ordered)
+                  "Pear":["Yellow"],"Yellow":["Color"],"White":["Color"],"Color":[]}).tsort(["Pear"])
+    assert_equal(["Color","Yellow","Pear"],ts.tsorted)
     
-class TestDictSort:
+class TestDictTSorted:
 
    def test_sample_input(self):
      p = DictParser().parse(
@@ -67,5 +67,4 @@ Fruit    .
 Pear     Yellow Fruit 
 """
      )
-     ts = TSorter(p.dict).sort(p.not_used_in_any_defs)
-     assert_equal(["Color","Red","Fruit","Apple","Yellow","Pear"],ts.ordered)
+     assert_equal(["Color","Red","Fruit","Apple","Yellow","Pear"],p.tsorted())
