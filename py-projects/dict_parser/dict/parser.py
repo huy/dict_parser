@@ -34,9 +34,6 @@ class LineParser:
     self.definition = [z for z in word_arr[1:] if z != "."]
     return self
 
-class SortError(Exception): 
-  pass 
-
 class TSorter:
 
   def __init__(self,dict):
@@ -62,13 +59,13 @@ if __name__ == "__main__":
   from os.path import exists 
 
   if len(argv) !=2:
-    print "missing inputfile"
+    print "ERROR: missing inputfile"
     exit(-1)
   
   script, filename = argv 
 
   if not exists(filename):
-    print "file %s does not exists" % filename
+    print "ERROR: file %s does not exists" % filename
     exit(-2)
 
   input = open(filename) 
@@ -76,7 +73,7 @@ if __name__ == "__main__":
   input.close() 
   
   if p.num_words() == 0:
-    print "file %s is empty or contains only comments" % filename
+    print "ERROR: file %s is empty or contains only comments" % filename
     exit(-3)
   else:
     print ",".join(p.tsort())

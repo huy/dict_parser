@@ -55,8 +55,8 @@ class TestSort(unittest.TestCase):
     sorted = TSorter({"Egg":["Chicken","White"],"Chicken":["Egg","Yellow"],
                   "Pear":["Yellow"],"Yellow":["Color"],"White":["Color"],"Color":[]}).sort(["Pear"])
    
-    self.assertTrue(sorted.index("Yellow") < sorted.index("Pear"))
     self.assertTrue(sorted.index("Color") < sorted.index("Yellow"))
+    self.assertTrue(sorted.index("Yellow") < sorted.index("Pear"))
     
 class TestParseAndSort(unittest.TestCase):
 
