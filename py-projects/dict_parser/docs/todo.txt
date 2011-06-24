@@ -4,6 +4,6 @@
 4. performance test
 5. run with desired input => DONE
 6. report word missing in dictionary
-7. report duplicated word in dictionary
+7. report duplicated word in dictionary => DONE
 8. substiute nose test with unittest => DONE
 9. report empty file => DONE

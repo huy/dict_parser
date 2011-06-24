@@ -1,6 +1,8 @@
 class DictParser:
   def __init__(self):
     self.dict={}
+    self.duplicated={}
+    self.sorted=[]
 
   def ignored(self,str):
     str = str.strip()
@@ -12,17 +14,24 @@ class DictParser:
     for str in lines.split("\n"):
       if not self.ignored(str):
         lp.parse(str)
+        if lp.word in self.dict:
+          self.process_duplicated(lp.word,lp.definition)
         self.dict[lp.word] = lp.definition
         for z in lp.definition:
           words_used_in_def.add(z)
 
     self.not_used_in_any_defs = [z for z in self.dict if not z in words_used_in_def] 
-
     return self
 
   def num_words(self):
     return len(self.dict.keys())
 
+  def process_duplicated(self,word,definition):
+    if word in self.duplicated:
+       self.duplicated[word].append(definition)
+    else:
+       self.duplicated[word] = [self.dict[word],definition] 
+      
   def tsort(self):
     s = TSorter(self.dict)
     s.sort(self.not_used_in_any_defs)
@@ -87,15 +96,16 @@ if __name__ == "__main__":
   if p.num_words() == 0:
     print "ERROR: file %s is empty or contains only comments" % filename
     exit(-3)
-  else:
-    p.tsort()
-    print ",".join(p.sorted)
+
+  p.tsort()
+  print ",".join(p.sorted)
+
+  if len(p.duplicated):
+    print "WARNING: detect duplicated definition(s)"
+    for z in p.duplicated:
+      print "\t%d x %s" % (len(p.duplicated[z]),z)
 
   if len(p.cycles):
-    print "WARNING: detect cyclic definitions"
+    print "WARNING: detect cyclic definition(s)"
     for z in p.cycles:
       print "\t%s" % z
-    exit(1)
- 
-  exit(0)
-

@@ -28,6 +28,6 @@ There are following edge cases
 
 * if word in the dictionary is defined more than once then the later definition 
 will overwrite the earlier
-* if the dictionary has cycle meaning e.g. word_a is defined using word_b which 
+* if the dictionary has a cycle meaning e.g. word_a is defined using word_b which 
 in turn is defined using word_a then the program will report such cycle
 
