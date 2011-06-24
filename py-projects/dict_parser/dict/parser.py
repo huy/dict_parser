@@ -52,17 +52,17 @@ class LineParser:
     return self
 
 if __name__ == "__main__":
-  from sys import argv,exit
+  from sys import argv,exit,stderr
   from os.path import exists 
 
   if len(argv) !=2:
-    print "ERROR: missing inputfile"
+    print >> stderr, "ERROR: missing inputfile"
     exit(-1)
   
   script, filename = argv 
 
   if not exists(filename):
-    print "ERROR: file %s does not exists" % filename
+    print >> stderr, "ERROR: file %s does not exists" % filename
     exit(-2)
 
   input = open(filename) 
@@ -70,22 +70,22 @@ if __name__ == "__main__":
   input.close() 
   
   if p.num_words() == 0:
-    print "ERROR: file %s is empty or contains only comments" % filename
+    print >> stderr, "ERROR: file %s is empty or contains only comments" % filename
     exit(-3)
 
   p.tsort()
   print ",".join(p.sorted)
 
   if len(p.duplicated):
-    print "WARNING: detect duplicated definition(s)"
+    print >> stderr, "WARNING: detect duplicated definition(s)"
     for z in p.duplicated:
-      print "\t%d x %s" % (len(p.duplicated[z]),z)
+      print >> stderr, "\t%d x %s" % (len(p.duplicated[z]),z)
 
   if len(p.not_defined_in_dict):
-    print "WARNING: detect words used in definition but are not defined in dict"
-    print "\t%s" % ",".join(p.not_defined_in_dict)
+    print >> stderr, "WARNING: detect words used in definition but are not defined in dict"
+    print >> stderr, "\t%s" % ",".join(p.not_defined_in_dict)
 
   if len(p.cycles):
-    print "WARNING: detect cyclic definition(s)"
+    print >> stderr, "WARNING: detect cyclic definition(s)"
     for z in p.cycles:
-      print "\t%s" % z
+      print >> stderr, "\t%s" % z
