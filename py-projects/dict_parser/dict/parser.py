@@ -1,8 +1,12 @@
+from sorter import TSorter
+
 class DictParser:
   def __init__(self):
     self.dict={}
     self.duplicated={}
     self.sorted=[]
+    self.not_used_in_any_defs=[]
+    self.not_defined_in_dict=[]
 
   def ignored(self,str):
     str = str.strip()
@@ -21,6 +25,7 @@ class DictParser:
           words_used_in_def.add(z)
 
     self.not_used_in_any_defs = [z for z in self.dict if not z in words_used_in_def] 
+    self.not_defined_in_dict = [z for z in words_used_in_def if not z in self.dict]
     return self
 
   def num_words(self):
@@ -46,35 +51,6 @@ class LineParser:
     self.definition = [z for z in word_arr[1:] if z != "."]
     return self
 
-class SortCycleError(Exception):
-  pass
-
-class TSorter:
-
-  def __init__(self,dict):
-    self.dict = dict
-
-  def sort(self,start_with):
-    self.sorted = []
-    self.visited = set()
-    self.cycles = []
-    for z in start_with:
-      self.visit(z,[])
-    return self.sorted
-      
-  def visit(self,word,call_chain):
-    if not word in call_chain:
-      call_chain.append(word)
-      if word in self.dict:
-        for z in self.dict[word]:
-          self.visit(z,call_chain)
-        if not word in self.visited:
-          self.visited.add(word)
-          self.sorted.append(word) 
-    else:
-      call_chain.append(word)
-      self.cycles.append("->".join(call_chain))
-  
 if __name__ == "__main__":
   from sys import argv,exit
   from os.path import exists 
@@ -104,6 +80,10 @@ if __name__ == "__main__":
     print "WARNING: detect duplicated definition(s)"
     for z in p.duplicated:
       print "\t%d x %s" % (len(p.duplicated[z]),z)
+
+  if len(p.not_defined_in_dict):
+    print "WARNING: detect words used in definition but are not defined in dict"
+    print "\t%s" % ",".join(p.not_defined_in_dict)
 
   if len(p.cycles):
     print "WARNING: detect cyclic definition(s)"
