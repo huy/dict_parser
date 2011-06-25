@@ -23,8 +23,8 @@ class DictParser:
         for z in definition:
           words_used_in_def.add(z)
 
-    self.not_used_in_any_defs = [z for z in self.dict if not z in words_used_in_def] 
-    self.not_defined_in_dict = [z for z in words_used_in_def if not z in self.dict]
+    self.not_used_in_any_defs = [z for z in self.dict if z not in words_used_in_def] 
+    self.not_defined_in_dict = [z for z in words_used_in_def if z not in self.dict]
     return self
 
   def parse_a_line(self,line):
@@ -81,4 +81,4 @@ if __name__ == "__main__":
 
   if p.cycles:
     print >> stderr,"ERROR: detect cyclic definition(s)"
-    print >> stderr,"\t","\n\t".join(p.cycles)
+    print >> stderr,"\t","\n\t".join(["->".join(z) for z in p.cycles])

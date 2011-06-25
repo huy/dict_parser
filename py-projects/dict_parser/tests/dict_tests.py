@@ -60,13 +60,13 @@ class TestSort(unittest.TestCase):
             "Color":[]})
    
     s.sort(["Bird"])
-    self.assertEqual("Bird->Egg->Chicken->Egg",s.cycles[0])
+    self.assertEqual(["Bird","Egg","Chicken","Egg"],s.cycles[0])
 
     s.sort(["Egg"])
-    self.assertEqual("Egg->Chicken->Egg",s.cycles[0])
+    self.assertEqual(["Egg","Chicken","Egg"],s.cycles[0])
 
     s.sort(["Chicken"])
-    self.assertEqual("Chicken->Egg->Chicken",s.cycles[0])
+    self.assertEqual(["Chicken","Egg","Chicken"],s.cycles[0])
     
 class TestParseAndSort(unittest.TestCase):
 

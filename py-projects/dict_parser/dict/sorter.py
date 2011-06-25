@@ -12,16 +12,17 @@ class TSorter:
     return self.sorted
 
   def visit(self,word,call_chain):
-    if not word in call_chain:
+    if word not in call_chain:
       call_chain.append(word)
       if word in self.dict:
         for z in self.dict[word]:
           self.visit(z,call_chain)
           call_chain.pop()
-        if not word in self.visited:
+        if word not in self.visited:
           self.visited.add(word)
           self.sorted.append(word)
     else:
       call_chain.append(word)
-      self.cycles.append("->".join(call_chain))
+      self.cycles.append(list(call_chain))
+
 
