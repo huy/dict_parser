@@ -5,11 +5,11 @@ class TestParseDict(unittest.TestCase):
 
   def test_ignore_comment(self):
     p = DictParser().parse("# this is comment\n #\n\t#\nColor .") 
-    self.assertEqual(1,p.num_words())
+    self.assertEqual(1,len(p.dict))
 
   def test_ignore_empty_line(self):
     p = DictParser().parse("\n \n\t\nColor .") 
-    self.assertEqual(1,p.num_words())
+    self.assertEqual(1,len(p.dict))
 
   def test_words_not_used_in_any_defs(self):
     p = DictParser().parse("Color .\nRed Color\nFruit .\nApple Red Fruit") 

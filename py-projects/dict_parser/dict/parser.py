@@ -4,21 +4,18 @@ class DictParser:
   def __init__(self):
     self.dict={}
     self.duplicated={}
-    self.sorted=[]
-    self.not_used_in_any_defs=[]
-    self.not_defined_in_dict=[]
 
   def ignored(self,str):
-    str = str.strip()
-    return str=="" or str[0] == "#"
+    return (not str) or (str[0] == "#")
 
   def parse(self,lines):
     words_used_in_def=set()
     for str in lines.split("\n"):
+      str = str.strip()
       if not self.ignored(str):
         word,definition = self.parse_a_line(str)
         if word in self.dict:
-          self.process_duplicated(word,definition)
+          self.add_duplicated(word,definition)
         self.dict[word] = definition
         for z in definition:
           words_used_in_def.add(z)
@@ -31,10 +28,7 @@ class DictParser:
     word_arr = line.split("#")[0].strip().split()
     return word_arr[0],[z for z in word_arr[1:] if z != "."]
 
-  def num_words(self):
-    return len(self.dict.keys())
-
-  def process_duplicated(self,word,definition):
+  def add_duplicated(self,word,definition):
     if word in self.duplicated:
        self.duplicated[word].append(definition)
     else:
@@ -64,7 +58,7 @@ if __name__ == "__main__":
   p = DictParser().parse(input.read())
   input.close() 
   
-  if not p.num_words():
+  if not p.dict:
     print >> stderr, "ERROR: file %s is empty or contains only comments" % filename
     exit(-3)
 
