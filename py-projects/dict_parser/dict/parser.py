@@ -14,19 +14,22 @@ class DictParser:
 
   def parse(self,lines):
     words_used_in_def=set()
-    lp = LineParser()
     for str in lines.split("\n"):
       if not self.ignored(str):
-        lp.parse(str)
-        if lp.word in self.dict:
-          self.process_duplicated(lp.word,lp.definition)
-        self.dict[lp.word] = lp.definition
-        for z in lp.definition:
+        word,definition = self.parse_a_line(str)
+        if word in self.dict:
+          self.process_duplicated(word,definition)
+        self.dict[word] = definition
+        for z in definition:
           words_used_in_def.add(z)
 
     self.not_used_in_any_defs = [z for z in self.dict if not z in words_used_in_def] 
     self.not_defined_in_dict = [z for z in words_used_in_def if not z in self.dict]
     return self
+
+  def parse_a_line(self,line):
+    word_arr = line.split("#")[0].strip().split()
+    return word_arr[0],[z for z in word_arr[1:] if z != "."]
 
   def num_words(self):
     return len(self.dict.keys())
@@ -42,14 +45,6 @@ class DictParser:
     s.sort(self.not_used_in_any_defs)
     self.sorted = s.sorted
     self.cycles = s.cycles
-
-class LineParser:
-
-  def parse(self,line):
-    word_arr = line.split("#")[0].strip().split()
-    self.word = word_arr[0]
-    self.definition = [z for z in word_arr[1:] if z != "."]
-    return self
 
 if __name__ == "__main__":
   from sys import argv,exit,stderr
@@ -78,14 +73,12 @@ if __name__ == "__main__":
 
   if p.duplicated:
     print >> stderr, "WARNING: detect duplicated definition(s)"
-    for z in p.duplicated:
-      print >> stderr, "\t%d x %s" % (len(p.duplicated[z]),z)
+    print >> stderr, "\t%s" % ",".join(["%dx%s" % (len(d),w) for w,d in p.duplicated.items()])
 
   if p.not_defined_in_dict:
     print >> stderr, "WARNING: detect words used in definition but are not defined in dict"
     print >> stderr, "\t%s" % ",".join(p.not_defined_in_dict)
 
   if p.cycles:
-    print >> stderr, "ERROR: detect cyclic definition(s)"
-    for z in p.cycles:
-      print >> stderr, "\t%s" % z
+    print >> stderr,"ERROR: detect cyclic definition(s)"
+    print >> stderr,"\t","\n\t".join(p.cycles)

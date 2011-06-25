@@ -18,20 +18,20 @@ class TestParseDict(unittest.TestCase):
 class TestParseLine(unittest.TestCase):
 
   def test_ignore_comment(self):
-    p = LineParser().parse("Yellow Color # bright")
-    self.assertEqual(["Color"],p.definition)
+    w,d = DictParser().parse_a_line("Yellow Color # bright")
+    self.assertEqual(["Color"],d)
 
   def test_primitive_def(self):
-    p = LineParser().parse("Color .")
-    self.assertEqual([],p.definition)
+    w,d = DictParser().parse_a_line("Color .")
+    self.assertEqual([],d)
 
   def test_got_a_word(self):
-    p = LineParser().parse("Yellow Color")
-    self.assertEqual("Yellow",p.word)
+    w,d = DictParser().parse_a_line("Yellow Color")
+    self.assertEqual("Yellow",w)
 
   def test_got_a_def(self):
-    p = LineParser().parse("Apple Red Fruit")
-    self.assertEqual(["Red","Fruit"],p.definition)
+    w,d = DictParser().parse_a_line("Apple Red Fruit")
+    self.assertEqual(["Red","Fruit"],d)
 
 class TestSort(unittest.TestCase):
 
