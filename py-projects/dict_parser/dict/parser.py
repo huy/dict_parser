@@ -10,7 +10,7 @@ class DictParser:
 
   def ignored(self,str):
     str = str.strip()
-    return str == "" or str[0] == "#"
+    return str=="" or str[0] == "#"
 
   def parse(self,lines):
     words_used_in_def=set()
@@ -55,7 +55,7 @@ if __name__ == "__main__":
   from sys import argv,exit,stderr
   from os.path import exists 
 
-  if len(argv) !=2:
+  if len(argv) <2:
     print >> stderr, "ERROR: missing inputfile"
     exit(-1)
   
@@ -69,23 +69,23 @@ if __name__ == "__main__":
   p = DictParser().parse(input.read())
   input.close() 
   
-  if p.num_words() == 0:
+  if not p.num_words():
     print >> stderr, "ERROR: file %s is empty or contains only comments" % filename
     exit(-3)
 
   p.tsort()
   print ",".join(p.sorted)
 
-  if len(p.duplicated):
+  if p.duplicated:
     print >> stderr, "WARNING: detect duplicated definition(s)"
     for z in p.duplicated:
       print >> stderr, "\t%d x %s" % (len(p.duplicated[z]),z)
 
-  if len(p.not_defined_in_dict):
+  if p.not_defined_in_dict:
     print >> stderr, "WARNING: detect words used in definition but are not defined in dict"
     print >> stderr, "\t%s" % ",".join(p.not_defined_in_dict)
 
-  if len(p.cycles):
-    print >> stderr, "WARNING: detect cyclic definition(s)"
+  if p.cycles:
+    print >> stderr, "ERROR: detect cyclic definition(s)"
     for z in p.cycles:
       print >> stderr, "\t%s" % z

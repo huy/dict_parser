@@ -1,6 +1,3 @@
-class SortCycleError(Exception):
-  pass
-
 class TSorter:
 
   def __init__(self,dict):
@@ -20,6 +17,7 @@ class TSorter:
       if word in self.dict:
         for z in self.dict[word]:
           self.visit(z,call_chain)
+          call_chain.pop()
         if not word in self.visited:
           self.visited.add(word)
           self.sorted.append(word)

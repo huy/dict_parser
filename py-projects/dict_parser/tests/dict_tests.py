@@ -52,8 +52,8 @@ class TestSort(unittest.TestCase):
     self.assertTrue(sorted.index("Yellow") < sorted.index("Pear"))
 
   def test_has_cycle(self):
-    s = TSorter({"Egg":["Chicken","White"],
-            "Chicken":["Egg","Yellow"],
+    s = TSorter({"Egg":["White","Chicken"],
+            "Chicken":["Yellow","Egg"],
             "Bird":["Egg"],
             "Yellow":["Color"],
             "White":["Color"],
